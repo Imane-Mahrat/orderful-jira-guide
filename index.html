@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 Orderful Jira Guide for Scrum</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #1a202c;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #4a5568;
+            margin-bottom: 2rem;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #4a5568;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-section {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-item.completed {
+            background: rgba(229, 231, 235, 0.8);
+            color: #374151;
+        }
+
+        .section {
+            margin-bottom: 1.5rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-header:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title h2 {
+            font-size: 1.5rem;
+            color: #1a202c;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-content {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+        }
+
+        .section-content.expanded {
+            display: block;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-card h4 {
+            font-size: 1.2rem;
+            color: #1a202c;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .config-item {
+            border-left: 4px solid #d1d5db;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .config-item h5 {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .config-item p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .sprint-card {
+            background: rgba(249, 250, 251, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(229, 231, 235, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .sprint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .sprint-duration {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .story-list {
+            list-style: none;
+        }
+
+        .story-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .workflow-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .workflow-tag {
+            background: rgba(229, 231, 235, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #374151;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: rgba(249, 250, 251, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(229, 231, 235, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+        }
+
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: inline-block;
+        }
+
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+
+        .chevron.rotated {
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .badges {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="glass header">
+            <h1>🌸 Orderful Jira Guide for Scrum</h1>
+            <p>Step-by-step guide for managing Orderful EDI projects with Jira & Scrum methodology</p>
+            <div class="badges">
+                <div class="badge">👥 For Project Managers</div>
+                <div class="badge">🎯 EDI Orderful Projects</div>
+                <div class="badge">⚡ Orderful Platform</div>
+            </div>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="glass progress-section">
+            <h2 style="margin-bottom: 1rem; color: #1a202c;">Your Progress</h2>
+            <div class="progress-grid" id="progressGrid">
+                <!-- Progress items will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Guide Sections -->
+        <div id="sectionsContainer">
+            <!-- Sections will be generated by JavaScript -->
+        </div>
+
+        <!-- Footer -->
+        <div class="glass footer">
+            <p style="color: #6b7280;">
+                💌 Remember: Every successful EDI integration starts with great project management. 
+                You're creating seamless business experiences, one transaction at a time! ✨
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let expandedSections = ['setup'];
+        let completedSections = [];
+
+        // Data
+        const sprints = [
+            {
+                name: "Sprint 1: Discovery & Setup",
+                duration: "Week 1-2",
+                focus: "Project Foundation",
+                stories: [
+                    "Client Discovery Call & Requirements Gathering",
+                    "Production File Collection (850, 855, 856)",
+                    "NetSuite Environment Access Setup",
+                    "Trading Partner Guidelines Review"
+                ]
+            },
+            {
+                name: "Sprint 2: Core Integration",
+                duration: "Week 3-4",
+                focus: "850/855 Implementation",
+                stories: [
+                    "850 Purchase Order Mapping & Validation",
+                    "855 Acknowledgment Logic Configuration",
+                    "NetSuite Field Mapping & Custom Fields",
+                    "Initial Testing & Client Validation"
+                ]
+            },
+            {
+                name: "Sprint 3: Fulfillment Flow",
+                duration: "Week 5-6",
+                focus: "856/810 & 3PL Integration",
+                stories: [
+                    "856 ASN Integration with 3PL/Celigo",
+                    "810 Invoice Generation & Timing",
+                    "Label Generation & Tracking Integration",
+                    "End-to-End Testing"
+                ]
+            }
+        ];
+
+        const sections = [
+            {
+                id: 'setup',
+                title: '🚀 Phase 1: Jira Project Setup for EDI',
+                content: `
+                    <div class="content-card">
+                        <h4>⚙️ Project Configuration</h4>
+                        <div class="config-item">
+                            <h5>Project Template: Scrum</h5>
+                            <p>Choose Scrum template for sprint-based EDI integrations</p>
+                        </div>
+                        <div class="config-item">
+                            <h5>Project Key: EDI-[CLIENT]</h5>
+                            <p>Example: EDI-LEVIS, EDI-KOHL, EDI-REI</p>
+                        </div>
+                        <div class="config-item">
+                            <h5>Issue Types</h5>
+                            <ul style="margin-left: 1rem; color: #6b7280; font-size: 0.9rem;">
+                                <li>• Epic: Trading Partner Integration</li>
+                                <li>• Story: Transaction Implementation (850, 855, 856, etc.)</li>
+                                <li>• Task: Technical Configuration</li>
+                                <li>• Bug: Integration Issues</li>
+                                <li>• Sub-task: Field Mapping, Testing Steps</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <h4>Custom Fields for EDI Projects</h4>
+                        <div class="grid">
+                            <div>
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Trading Partner</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Dropdown: Kohl's, REI, Walmart, etc.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Transaction Type</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Select: 850, 855, 856, 810, 846, 860, etc.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Integration Phase</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Discovery, Development, Testing, Go-Live</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Client Environment</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">NetSuite, SAP, Custom ERP</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'epics',
+                title: '📋 Phase 2: Epic & Story Structure',
+                content: `
+                    <div class="content-card">
+                        <h4>Epic Structure Template</h4>
+                        <div style="background: rgba(249, 250, 251, 0.8); backdrop-filter: blur(4px); border: 1px solid rgba(229, 231, 235, 0.3); border-radius: 8px; padding: 1rem;">
+                            <h5 style="color: #374151; margin-bottom: 0.75rem;">Epic: Kohl's B2B Integration</h5>
+                            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 0.75rem;">Complete EDI integration for Kohl's including store-level delivery and UCC-128 labels</p>
+                            <div>
+                                <span style="font-weight: 600; color: #374151;">Stories:</span>
+                                <ul style="margin-left: 1rem; margin-top: 0.5rem; color: #6b7280; font-size: 0.9rem;">
+                                    <li>• 850 Purchase Order Processing with SDQ segments</li>
+                                    <li>• 855 Acknowledgment with backorder logic</li>
+                                    <li>• 856 ASN with store destination mapping</li>
+                                    <li>• 810 Invoice generation and timing</li>
+                                    <li>• UCC-128 label integration</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <h4>User Story Templates</h4>
+                        <div style="background: rgba(249, 250, 251, 0.8); backdrop-filter: blur(4px); border: 1px solid rgba(229, 231, 235, 0.3); border-radius: 8px; padding: 1rem;">
+                            <h5 style="color: #374151; margin-bottom: 0.5rem;">850 Purchase Order Story</h5>
+                            <p style="color: #6b7280; font-size: 0.9rem; font-style: italic; margin-bottom: 0.75rem;">
+                                "As a Levi's warehouse manager, I want to receive Kohl's purchase orders automatically in NetSuite 
+                                so that I can fulfill orders without manual data entry."
+                            </p>
+                            <div>
+                                <span style="font-weight: 600; color: #374151;">Acceptance Criteria:</span>
+                                <ul style="margin-left: 1rem; margin-top: 0.25rem; color: #6b7280; font-size: 0.9rem;">
+                                    <li>• 850 files validate against Kohl's guidelines</li>
+                                    <li>• SDQ segments map to store destinations</li>
+                                    <li>• All required NetSuite fields populate</li>
+                                    <li>• Custom fields (dept codes, buyer numbers) map correctly</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'sprints',
+                title: '⚡ Phase 3: Sprint Planning for EDI',
+                content: `
+                    <div class="content-card">
+                        <h4>📅 Sprint Structure</h4>
+                        <div style="display: grid; gap: 1rem;">
+                            ${sprints.map(sprint => `
+                                <div class="sprint-card">
+                                    <div class="sprint-header">
+                                        <h5 style="color: #374151; font-weight: 600;">${sprint.name}</h5>
+                                        <span class="sprint-duration">${sprint.duration}</span>
+                                    </div>
+                                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 0.75rem;">Focus: ${sprint.focus}</p>
+                                    <ul class="story-list">
+                                        ${sprint.stories.map(story => `
+                                            <li class="story-item">
+                                                <span style="color: #9ca3af;">○</span>
+                                                ${story}
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <h4>Sprint Planning Best Practices</h4>
+                        <div class="grid">
+                            <div>
+                                <h5 style="color: #374151; margin-bottom: 0.75rem;">Story Pointing for EDI</h5>
+                                <ul style="color: #6b7280; font-size: 0.9rem;">
+                                    <li>• 1 point: Simple field mapping</li>
+                                    <li>• 3 points: Standard transaction (850, 855)</li>
+                                    <li>• 5 points: Complex transaction (856 with 3PL)</li>
+                                    <li>• 8 points: Multi-TP integration</li>
+                                    <li>• 13 points: Custom middleware development</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 style="color: #374151; margin-bottom: 0.75rem;">Velocity Considerations</h5>
+                                <ul style="color: #6b7280; font-size: 0.9rem;">
+                                    <li>• Account for client response time</li>
+                                    <li>• Buffer for production file delays</li>
+                                    <li>• Include 3PL coordination time</li>
+                                    <li>• Plan for testing iterations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'workflow',
+                title: '🔄 Phase 4: Workflow & Board Setup',
+                content: `
+                    <div class="content-card">
+                        <h4>EDI-Specific Workflow</h4>
+                        <div class="workflow-tags">
+                            <div class="workflow-tag">Backlog</div>
+                            <div class="workflow-tag">Discovery</div>
+                            <div class="workflow-tag">Development</div>
+                            <div class="workflow-tag">Client Testing</div>
+                            <div class="workflow-tag">Integration Testing</div>
+                            <div class="workflow-tag">UAT</div>
+                            <div class="workflow-tag">Go-Live Ready</div>
+                            <div class="workflow-tag">Done</div>
+                        </div>
+                        <div style="display: grid; gap: 0.75rem;">
+                            <div style="font-size: 0.9rem;">
+                                <span style="font-weight: 600; color: #374151;">Discovery:</span>
+                                <span style="color: #6b7280; margin-left: 0.5rem;">Requirements gathering, file collection</span>
+                            </div>
+                            <div style="font-size: 0.9rem;">
+                                <span style="font-weight: 600; color: #374151;">Client Testing:</span>
+                                <span style="color: #6b7280; margin-left: 0.5rem;">Client validates test orders in their system</span>
+                            </div>
+                            <div style="font-size: 0.9rem;">
+                                <span style="font-weight: 600; color: #374151;">Integration Testing:</span>
+                                <span style="color: #6b7280; margin-left: 0.5rem;">End-to-end testing with 3PL/middleware</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <h4>Board Configuration</h4>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="background: rgba(249, 250, 251, 0.8); backdrop-filter: blur(4px); border: 1px solid rgba(229, 231, 235, 0.3); border-radius: 8px; padding: 1rem;">
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Swimlanes by Trading Partner</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Organize board by TP (Kohl's, REI, Walmart) for multi-client projects</p>
+                            </div>
+                            <div style="background: rgba(249, 250, 251, 0.8); backdrop-filter: blur(4px); border: 1px solid rgba(229, 231, 235, 0.3); border-radius: 8px; padding: 1rem;">
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Quick Filters</h5>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                    <span style="background: rgba(255, 255, 255, 0.6); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; color: #6b7280;">850 Orders</span>
+                                    <span style="background: rgba(255, 255, 255, 0.6); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; color: #6b7280;">Client Blocked</span>
+                                    <span style="background: rgba(255, 255, 255, 0.6); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; color: #6b7280;">Testing Ready</span>
+                                    <span style="background: rgba(255, 255, 255, 0.6); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; color: #6b7280;">Go-Live</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'tracking',
+                title: '📊 Phase 5: Progress Tracking & Metrics',
+                content: `
+                    <div class="content-card">
+                        <h4>📈 Key EDI Metrics</h4>
+                        <div class="metric-grid">
+                            <div class="metric-card">
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Integration Velocity</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Story points completed per sprint</p>
+                            </div>
+                            <div class="metric-card">
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Time to Go-Live</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Days from kickoff to production</p>
+                            </div>
+                            <div class="metric-card">
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Client Response Time</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Average time for client feedback</p>
+                            </div>
+                            <div class="metric-card">
+                                <h5 style="color: #374151; margin-bottom: 0.5rem;">Testing Iterations</h5>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Cycles needed per transaction</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <h4>Reporting Dashboard Setup</h4>
+                        <div style="display: grid; gap: 0.75rem;">
+                            <div style="font-size: 0.9rem;">
+                                <span style="font-weight: 600; color: #374151;">Sprint Burndown:</span>
+                                <span style="color: #6b7280; margin-left: 0.5rem;">Track story completion against sprint timeline</span>
+                            </div>
+                            <div style="font-size: 0.9rem;">
+                                <span style="font-weight: 600; color: #374151;">Cumulative Flow:</span>
+                                <span style="color: #6b7280; margin-left: 0.5rem;">Identify bottlenecks in testing phases</span>
+                            </div>
+                            <div style="font-size: 0.9rem;">
+                                <span style="font-weight: 600; color: #374151;">Velocity Chart:</span>
+                                <span style="color: #6b7280; margin-left: 0.5rem;">Predict future sprint capacity</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        // Functions
+        function toggleSection(sectionId) {
+            const index = expandedSections.indexOf(sectionId);
+            if (index > -1) {
+                expandedSections.splice(index, 1);
+            } else {
+                expandedSections.push(sectionId);
+            }
+            renderSections();
+        }
+
+        function toggleCompletion(sectionId) {
+            const index = completedSections.indexOf(sectionId);
+            if (index > -1) {
+                completedSections.splice(index, 1);
+            } else {
+                completedSections.push(sectionId);
+            }
+            renderProgress();
+            renderSections();
+        }
+
+        function renderProgress() {
+            const progressGrid = document.getElementById('progressGrid');
+            progressGrid.innerHTML = sections.map(section => `
+                <div class="progress-item ${completedSections.includes(section.id) ? 'completed' : ''}" 
+                     onclick="toggleCompletion('${section.id}')">
+                    <span>${completedSections.includes(section.id) ? '✓' : '○'}</span>
+                    <span>${section.title.replace(/🚀|📋|⚡|🔄|📊/g, '').trim()}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderSections() {
+            const container = document.getElementById('sectionsContainer');
+            container.innerHTML = sections.map(section => `
+                <div class="section glass">
+                    <div class="section-header" onclick="toggleSection('${section.id}')">
+                        <div class="section-title">
+                            <h2>
+                                <span onclick="event.stopPropagation(); toggleCompletion('${section.id}')" 
+                                      style="cursor: pointer; transition: transform 0.2s;">
+                                    ${completedSections.includes(section.id) ? '✓' : '○'}
+                                </span>
+                                ${section.title}
+                            </h2>
+                            <span class="chevron ${expandedSections.includes(section.id) ? 'rotated' : ''}">
+                                ▶
+                            </span>
+                        </div>
+                    </div>
+                    <div class="section-content ${expandedSections.includes(section.id) ? 'expanded' : ''}">
+                        ${section.content}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProgress();
+            renderSections();
+        });
+    </script>
+</body>
+</html>
